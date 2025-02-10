@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+
+{% block title %} Listado de Pokemons {% endblock %}
+
+{% block content %}
+    <h1>Listado de Pokemons {% if l_type %}(Tipo {{ l_type|title }}){% endif %}</h1>
+    {% if pokemons %}
+        <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td class="tabla">#</td>
+                <td class="tabla">Sprite</td>
+                <td class="tabla">Nombre</td>
+                <td class="tabla">Tipos</td>
+                <td class="tabla">Versiones</td>
+            </tr>
+        </thead>
+        <tbdoy>
+            {% for p in pokemons %}
+            <a>
+                <td class="tabla">{{ p.id }}</td>
+                <td class="tabla">
+                    <a href="{% url 'detalle_pokeapi' p.id %}">
+                        {% if p.sprite %}
+                            <img src="{{ p.sprite }}" width="96" height="96">
+                        {% else %}
+                            <h5 class="tabla">Sprite NO disponible</h5>
+                        {% endif %}
+                    </a>
+                </td>
+                <td class="tabla"> <a href="{% url 'detalle_pokeapi' p.id %}">{{ p.name | title }}</td></a>
+                <td class="tabla">
+                    {% for t in p.types %}
+                         <a href="{% url 'listar_pokeapi_tipo' t %}">
+                        {{ t | title}}{% if not forloop.last %},{% endif %}
+                        </a>
+                    {% endfor %}
+                </td>
+                <td class="tabla">
+                    {% for v in p.versions %}
+                        {{ v | title }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                    {% if p.version %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbdoy>
+        </table>
+
+        {% if l_type %}
+            <a href="{% if previous %}{% url 'listar_pokeapi_tipo' l_type %}?offset={{ offset|add:-10 }}&limit={{ limit }}{% endif %}"><button type="button" class="btn btn-info" {% if not previous %}disabled{% endif %}> <-- </button></a>
+            <a href="{% if next %}{% url 'listar_pokeapi_tipo' l_type %}?offset={{ offset|add:limit }}&limit={{ limit }}{% endif %}"><button type="button" class="btn btn-info" {% if not next %}disabled{% endif %}> --> </button></a>
+        {% else %}
+            <a href="{% if previous %}{% url 'listar_pokeapi' %}?offset={{ offset|add:-10 }}&limit={{ limit }}{% endif %}"><button type="button" class="btn btn-info" {% if not previous %}disabled{% endif %}> <-- </button></a>
+            <a href="{% if next %}{% url 'listar_pokeapi' %}?offset={{ offset|add:limit }}&limit={{ limit }}{% endif %}"><button type="button" class="btn btn-info" {% if not next %}disabled{% endif %}> --> </button></a>
+
+        {% endif %}
+
+        {% else %}
+        <h2>No hay Pokemons que listar</h2>
+    {% endif %}
+{% endblock %}

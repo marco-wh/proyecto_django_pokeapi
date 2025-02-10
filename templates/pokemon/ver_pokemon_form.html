@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Ver - {{ pokemon.name | title }}{% endblock %}
+
+{% block content %}
+    <h1>Información de {{ pokemon.name | title}}</h1>
+    <h2>Orden: {{ pokemon.order }}</h2>
+    <h2>Tipos:
+        {% for t in pokemon.types %}
+            {{ t.type.name | title }}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    </h2>
+    <h2>
+        Habilidades:
+        {% if pokemon.abilities %}
+            {% for a in pokemon.abilities %}
+                {{ a|title }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            Ninguna habilidad registrada
+        {% endif %}
+    </h2>
+    <h2> Movimientos:<h3>
+    <h3>
+        {% if pokemon.moves %}
+            {% for m in pokemon.moves %}
+                {{ m|title }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            Ningun movimiento registrado
+        {% endif %}
+    </h3>
+    <h2>Version: {{ pokemon.version_group.name | title}}</h2>
+    <h2>Deriva de:
+        {% if pokemon.origin.id %}
+            <a href="{% url 'detalle_pokeapi' pokemon.origin.id %}">
+            {{ pokemon.origin.name|title}}
+            </a>
+        {% else %}
+            Ninguno
+        {% endif %}
+    </h2>
+
+    <h2>Sprites:</h2>
+    {% if pokemon.sprites.front_default  %}<img src="{{ pokemon.sprites.front_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.back_default  %}<img src="{{ pokemon.sprites.back_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.front_shiny  %}<img src="{{ pokemon.sprites.front_shiny }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.back_shiny  %}<img src="{{ pokemon.sprites.back_shiny }}" height="150" width="150"> {% endif %}
+
+    {% if pokemon.sprites.other.home.front_default  %}<img src="{{ pokemon.sprites.other.home.front_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.other.home.back_default  %}<img src="{{ pokemon.sprites.other.home.back_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.other.home.front_shiny  %}<img src="{{ pokemon.sprites.other.home.front_shiny }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.other.home.back_shiny  %}<img src="{{ pokemon.sprites.other.home.back_shiny }}" height="150" width="150"> {% endif %}
+    <h2></h2>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Ver - {{ pokemon.name | title }}{% endblock %}
+
+{% block content %}
+    <h1>Información de {{ pokemon.name | title}}</h1>
+    <h2>Orden: {{ pokemon.order }}</h2>
+    <h2>Tipos:
+        {% for t in pokemon.types %}
+            <a href="{% url 'listar_pokeapi_tipo' t.type.name%}">
+                {{ t.type.name | title }}
+            </a>{% if not forloop.last %},{% endif %}
+
+        {% endfor %}
+    </h2>
+    <h2>Peso: {{ pokemon.weight }} hg</h2>
+    <h2>Altura: {{ pokemon.height }} dm</h2>
+    <h2>
+        Habilidades:
+        {% if pokemon.abilities_ %}
+            {% for a in pokemon.abilities_ %}
+                {{ a|title }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            Ninguna habilidad registrada
+        {% endif %}
+    </h2>
+    <h2> Movimientos:<h3>
+    <h3>
+        {% if pokemon.moves_ %}
+            {% for m in pokemon.moves_ %}
+                {{ m|title }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            Ningun movimiento registrado
+        {% endif %}
+    </h3>
+    <h2>Versiones:
+        {% if pokemon.versions_ %}
+            {% for v in pokemon.versions_ %}
+                {{ v|title }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            No hay versiones registradas
+        {% endif %}
+        {{ pokemon.version_group.name | title}}
+    </h2>
+    <h2>Formas diferentes:
+        {% if pokemon.forms_ %}
+            {% for f in pokemon.forms_ %}
+                <a href="{% url 'detalle_pokeapi_form' f.id %}">
+                {{ f.name|title}}
+                </a>{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        {% else %}
+            Ninguna
+        {% endif %}
+    </h2>
+
+    <h2>Sprites:</h2>
+    {% if pokemon.sprites.front_default  %}<img src="{{ pokemon.sprites.front_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.back_default  %}<img src="{{ pokemon.sprites.back_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.front_shiny  %}<img src="{{ pokemon.sprites.front_shiny }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.back_shiny  %}<img src="{{ pokemon.sprites.back_shiny }}" height="150" width="150"> {% endif %}
+
+    {% if pokemon.sprites.other.home.front_default  %}<img src="{{ pokemon.sprites.other.home.front_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.other.home.back_default  %}<img src="{{ pokemon.sprites.other.home.back_default }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.other.home.front_shiny  %}<img src="{{ pokemon.sprites.other.home.front_shiny }}" height="150" width="150"> {% endif %}
+    {% if pokemon.sprites.other.home.back_shiny  %}<img src="{{ pokemon.sprites.other.home.back_shiny }}" height="150" width="150"> {% endif %}
+    <h2></h2>
+{% endblock %}
