@@ -116,7 +116,6 @@ def listar_pokeapi(request):
         info = get_pokemon(pokemon['url'],
                                claves=['id', 'sprites', 'types', 'game_indices', 'names'])
 
-        pokemon['sprite'] = info['sprites']['front_default']
         pokemon['id'] = info['id']
         pokemon['types'] = []
         pokemon['types_id'] = []
@@ -133,6 +132,13 @@ def listar_pokeapi(request):
             pokemon['versions'].append(version['version']['name'])
 
         pokemon['name'] = pokemon['name'].replace('-', ' ')
+
+        if info['sprites']['front_default']:
+            pokemon['sprite'] = info['sprites']['front_default']
+        elif info['sprites']['other']['home']['front_default']:
+            pokemon['sprite'] = info['sprites']['other']['home']['front_default']
+        elif info['sprites']['other']['showdown']['front_default']:
+            pokemon['sprite'] = info['sprites']['other']['showdown']['front_default']
 
     context = {'pokemons': lista,
                'offset': offset,
